@@ -15,3 +15,9 @@ The copied source includes `allocation-kernel`, SP1 guest programs, host tools,
 and the Cargo workspace lockfile. Subsequent changes are recorded in this
 repository's Git history. This provenance does not constitute proof or release
 qualification.
+
+The current allocation dependency is pinned independently to
+`prf-pro-rata-allocation` revision
+`0b7b2a8badbaa2c345e8b9626aa68907510fc52f`, whose canonical dependency is
+pinned to `prf-canonical` revision
+`5e2b520feca812b049ba397b7b3681963c66a48c`.
