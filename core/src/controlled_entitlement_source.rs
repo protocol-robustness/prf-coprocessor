@@ -101,17 +101,33 @@ mod tests {
         set_source_root(&mut input);
         let result = derive(&input).unwrap();
         assert_eq!(result.entitlement_total, 70);
-        assert_eq!(result.entitlements.iter().map(|m| m.amount).collect::<Vec<_>>(), vec![35,21,14]);
-        let details = crate::realized_statement_io::run_realized_statement_with_details(&input["realized-statement-input"], true);
+        assert_eq!(
+            result
+                .entitlements
+                .iter()
+                .map(|m| m.amount)
+                .collect::<Vec<_>>(),
+            vec![35, 21, 14]
+        );
+        let details = crate::realized_statement_io::run_realized_statement_with_details(
+            &input["realized-statement-input"],
+            true,
+        );
         assert_eq!(details["details"]["audit"]["unmet-request-total"], 30);
         assert_eq!(details["details"]["audit"]["deferred-total"], 0);
         assert_eq!(details["details"]["audit"]["haircut-total"], 0);
         assert_eq!(details["details"]["audit"]["conservation"], true);
-        for (index, remaining) in [15,9,6].iter().enumerate() {
-            assert_eq!(details["details"]["realized-results"][index]["unrealized"], *remaining);
+        for (index, remaining) in [15, 9, 6].iter().enumerate() {
+            assert_eq!(
+                details["details"]["realized-results"][index]["unrealized"],
+                *remaining
+            );
         }
         input["realized-statement-input"]["fail-action-policy"] = json!({"mode":"pro-rata-treatment","deferred-policy":"same-ratio","haircut-policy":"same-ratio"});
-        assert!(derive(&input).is_err(), "a different disposition policy cannot reuse the committed source");
+        assert!(
+            derive(&input).is_err(),
+            "a different disposition policy cannot reuse the committed source"
+        );
     }
 
     #[test]
@@ -121,18 +137,31 @@ mod tests {
         input["requested"] = json!({"claim-a":"5","claim-b":"3","claim-c":"2"});
         for available in 0..=10 {
             input["available"] = json!(available.to_string());
-            let details = crate::realized_statement_io::run_realized_statement_with_details(&input,true);
-            assert_eq!(details["result/status"],"passing");
-            assert_eq!(details["details"]["audit"]["filled-total"],available);
-            assert_eq!(details["details"]["audit"]["unmet-request-total"],10-available);
-            assert_eq!(details["details"]["audit"]["conservation"],true);
-            assert_eq!(details["details"]["audit"]["deferred-total"],0);
+            let details =
+                crate::realized_statement_io::run_realized_statement_with_details(&input, true);
+            assert_eq!(details["result/status"], "passing");
+            assert_eq!(details["details"]["audit"]["filled-total"], available);
+            assert_eq!(
+                details["details"]["audit"]["unmet-request-total"],
+                10 - available
+            );
+            assert_eq!(details["details"]["audit"]["conservation"], true);
+            assert_eq!(details["details"]["audit"]["deferred-total"], 0);
         }
         input["available"] = json!("7");
-        let details = crate::realized_statement_io::run_realized_statement_with_details(&input,true);
+        let details =
+            crate::realized_statement_io::run_realized_statement_with_details(&input, true);
         let rows = details["details"]["realized-results"].as_array().unwrap();
-        assert_eq!(rows.iter().map(|p|p["filled"].as_i64().unwrap()).collect::<Vec<_>>(),vec![4,2,1]);
+        assert_eq!(
+            rows.iter()
+                .map(|p| p["filled"].as_i64().unwrap())
+                .collect::<Vec<_>>(),
+            vec![4, 2, 1]
+        );
         input["fail-action-policy"]["future-obligation"] = json!("deferred");
-        assert_eq!(crate::realized_statement_io::run_realized_statement(&input)["result/status"],"rejected");
+        assert_eq!(
+            crate::realized_statement_io::run_realized_statement(&input)["result/status"],
+            "rejected"
+        );
     }
 }
