@@ -1,0 +1,6 @@
+/target/
+**/target/
+*.elf
+*.proof
+*.pk
+*.vk
