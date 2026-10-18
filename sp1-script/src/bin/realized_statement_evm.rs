@@ -32,17 +32,11 @@ fn sha256_ref(bytes: &[u8]) -> String {
 #[derive(Parser, Debug)]
 #[command(author, version, about)]
 struct Args {
-    #[arg(
-        long,
-        default_value = "../../scenarios/allocation/a-vs-b-plus-c/realized-statement-input.json"
-    )]
+    #[arg(long)]
     input: String,
     #[arg(long, value_enum, default_value = "groth16")]
     system: ProofSystem,
-    #[arg(
-        long,
-        default_value = "../../sew-prf-genesis-solidity/src/fixtures/realized-statement-proof-fixture.json"
-    )]
+    #[arg(long)]
     fixture: String,
     #[arg(long)]
     mock: bool,

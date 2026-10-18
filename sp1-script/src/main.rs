@@ -25,10 +25,7 @@ const ALLOCATION_ELF: Elf = include_elf!("allocation-sp1-program");
 #[command(author, version, about)]
 struct Args {
     /// Path to the canonical allocation input JSON document.
-    #[arg(
-        long,
-        default_value = "../../scenarios/allocation/a-vs-b-plus-c/kernel-input.json"
-    )]
+    #[arg(long)]
     input: String,
     /// Execute the program without generating a proof.
     #[arg(long)]

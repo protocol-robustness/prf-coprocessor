@@ -42,7 +42,7 @@ mod tests {
 
     fn base() -> Value {
         let bundle: Value = serde_json::from_str(include_str!(
-            "../../../etc/conformance/vectors/source-bound-entitlement-v1.json"
+            "../../vectors/source-bound-entitlement-v1.json"
         ))
         .unwrap();
         bundle["base-input"].clone()

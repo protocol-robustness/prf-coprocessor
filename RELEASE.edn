@@ -1,0 +1,27 @@
+{:artifact/id "prf-coprocessor"
+ :source/version "0.1.0"
+ :source/status :extracted-unqualified
+ :release/status :not-qualified
+ :registry/published? false
+ :source/upstream-revision "0c0134c4b34f121c8b2201657270198425f89f28"
+ :source/upstream-tree "663b249f8f74f81e4a418ef4c1d8f1296009fbd7"
+ :cargo/packages
+ [{:name "allocation-kernel" :version "0.1.0"}
+  {:name "allocation-sp1-program" :version "0.1.0"}
+  {:name "allocation-sp1-script" :version "0.1.0"}
+  {:name "realized-statement-sp1-program" :version "0.1.0"}
+  {:name "realized-execution-sp1-program" :version "0.1.0"}
+  {:name "source-bound-sp1-program" :version "0.1.0"}
+  {:name "source-bound-v2-sp1-program" :version "0.1.0"}
+  {:name "source-bound-entitlement-sp1-program" :version "0.1.0"}
+  {:name "controlled-entitlement-source-sp1-program" :version "0.1.0"}
+  {:name "observed-run-sp1-program" :version "0.1.0"}
+  {:name "accounting-arithmetic-sp1-program" :version "0.1.0"}
+  {:name "accounting-arithmetic-sp1-host" :version "0.1.0"}
+  {:name "pro-rata-exact-verifier-sp1-program" :version "0.1.0"}
+  {:name "pro-rata-exact-verifier-sp1-host" :version "0.1.0"}]
+ :qualification
+ {:native-rust-tests :not-run
+  :sp1-guest-builds :not-qualified
+  :sp1-proof-generation :not-qualified
+  :solidity-proof-admission :not-qualified}}

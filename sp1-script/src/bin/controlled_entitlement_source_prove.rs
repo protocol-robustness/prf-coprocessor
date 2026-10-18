@@ -162,7 +162,7 @@ mod tests {
     #[test]
     fn controlled_guest_executes_bound_witness_and_matches_core() {
         let bundle: serde_json::Value = serde_json::from_str(include_str!(
-            "../../../../etc/conformance/vectors/source-bound-entitlement-v1.json"
+            "../../../vectors/source-bound-entitlement-v1.json"
         ))
         .unwrap();
         let mut input = bundle["base-input"].clone();

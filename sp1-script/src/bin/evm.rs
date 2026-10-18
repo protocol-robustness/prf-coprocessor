@@ -22,18 +22,12 @@ const ALLOCATION_ELF: Elf = include_elf!("allocation-sp1-program");
 #[command(author, version, about)]
 struct Args {
     /// Path to the canonical allocation input JSON document.
-    #[arg(
-        long,
-        default_value = "../../scenarios/allocation/a-vs-b-plus-c/kernel-input.json"
-    )]
+    #[arg(long)]
     input: String,
     #[arg(long, value_enum, default_value = "groth16")]
     system: ProofSystem,
     /// Proof/public-values output fixture path.
-    #[arg(
-        long,
-        default_value = "../contracts/allocation/src/fixtures/allocation-proof-fixture.json"
-    )]
+    #[arg(long)]
     fixture: String,
 }
 

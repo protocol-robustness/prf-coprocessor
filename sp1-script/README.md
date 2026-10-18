@@ -12,40 +12,45 @@ PRF public result == native Rust public result == SP1 guest public values
 
 ```bash
 # Execute the guest (no proof)
-cargo run --release --bin allocation-prove -- --execute --input <input.json>
+cargo run --locked --release --manifest-path sp1-script/Cargo.toml \
+  --bin allocation-prove -- --execute --input <input.json>
 
 # Prove the realized-allocation statement, locally verify it, compare its exact
 # public JSON bytes to native Rust, and persist an unsigned proof artifact.
-cargo run --release --bin realized-statement-prove -- --prove \
-  --input ../../scenarios/allocation/a-vs-b-plus-c/realized-statement-input.json \
-  --artifact ../../results/allocation/a-vs-b-plus-c/realized-statement/sp1-proof-artifact.json
+cargo run --locked --release --manifest-path sp1-script/Cargo.toml \
+  --bin realized-statement-prove -- --prove \
+  --input <realized-statement-input.json> \
+  --artifact <sp1-proof-artifact.json>
 
 # Generate and verify a core proof
-cargo run --release --bin allocation-prove -- --prove --input <input.json>
+cargo run --locked --release --manifest-path sp1-script/Cargo.toml \
+  --bin allocation-prove -- --prove --input <input.json>
 
 # Execute one source-bound entitlement conformance vector against its golden
-cargo run --manifest-path Cargo.toml --bin source-bound-entitlement-prove -- \
-  --execute --vectors ../../etc/conformance/vectors/source-bound-entitlement-v1.json \
+cargo run --locked --manifest-path sp1-script/Cargo.toml --bin source-bound-entitlement-prove -- \
+  --execute --vectors ../../vectors/source-bound-entitlement-v1.json \
   --vector A-minimum-realistic
 
 # Generate and verify an EVM-compatible Groth16 proof for that vector; the
 # proof fixture includes vector provenance and Groth16 on-chain proof bytes
-cargo run --manifest-path Cargo.toml --bin source-bound-entitlement-prove -- \
-  --prove --vectors ../../etc/conformance/vectors/source-bound-entitlement-v1.json \
-  --vector A-minimum-realistic --fixture ../../results/source-bound-entitlement-proof-v1.json
+cargo run --locked --manifest-path sp1-script/Cargo.toml --bin source-bound-entitlement-prove -- \
+  --prove --vectors ../../vectors/source-bound-entitlement-v1.json \
+  --vector A-minimum-realistic --fixture <proof-fixture.json>
 
 # The legacy --input form accepts exactly one raw successor witness JSON object.
 # For example, extract the identity vector's base witness from the bundle:
-jq -c '."base-input"' ../../etc/conformance/vectors/source-bound-entitlement-v1.json \
+jq -c '."base-input"' ../../vectors/source-bound-entitlement-v1.json \
   > /tmp/source-bound-entitlement-base-input.json
-cargo run --manifest-path Cargo.toml --bin source-bound-entitlement-prove -- \
+cargo run --locked --manifest-path sp1-script/Cargo.toml --bin source-bound-entitlement-prove -- \
   --prove --input /tmp/source-bound-entitlement-base-input.json
 
 # Print the program verification key
-cargo run --release --bin allocation-vkey
+cargo run --locked --release --manifest-path sp1-script/Cargo.toml \
+  --bin allocation-vkey
 
 # Generate an EVM-compatible (groth16/plonk) proof + Solidity fixture
-cargo run --release --bin allocation-evm -- --input <input.json> --system groth16
+cargo run --locked --release --manifest-path sp1-script/Cargo.toml \
+  --bin allocation-evm -- --input <input.json> --system groth16 --fixture <fixture.json>
 ```
 
 The guest program lives in `../sp1-program` and depends on the shared kernel in
@@ -53,13 +58,12 @@ The guest program lives in `../sp1-program` and depends on the shared kernel in
 
 ## Reproducible realized-proof target
 
-Run the repository target rather than relying on a machine-global writable
-Cargo registry/cache:
+For a reproducible realized-proof run, pass caller-owned input and output paths:
 
 ```bash
-make allocation-realized-proof
-# or choose an artifact destination:
-./scripts/prove-realized-statement.sh results/allocation/custom/sp1-proof-artifact.json
+cargo run --locked --release --manifest-path sp1-script/Cargo.toml \
+  --bin realized-statement-prove -- --prove \
+  --input <realized-statement-input.json> --artifact <sp1-proof-artifact.json>
 ```
 
 It uses ignored project-local `.sp1-proof-cache/` Cargo, target, and Go module
@@ -67,14 +71,15 @@ cache directories. Those paths affect build caching only; the persisted proof
 artifact records the proof profile, Rust-visible guest ELF digest, VK, exact
 public bytes/digest, and a content-addressed sibling `sp1-bincode.v1` Core-proof
 envelope, plus `rustc --version` and the SHA-256 of the locked
-`coprocessor/Cargo.lock`. A fresh cache requires the normal Cargo package
+root `Cargo.lock`. A fresh cache requires the normal Cargo package
 acquisition available in the supported CI/proving environment; subsequent runs
 use `--locked` and must not resolve a different dependency graph.
 
 ## Proof mode
 
-`cargo run --bin allocation-prove -- --prove` uses the prover configured by the
-environment. Set `SP1_PROVER=cpu` for local proof generation, or omit it to use
+`cargo run --locked --manifest-path sp1-script/Cargo.toml --bin allocation-prove -- --prove`
+uses the prover configured by the environment. Set `SP1_PROVER=cpu` for local
+proof generation, or omit it to use
 the default prover. Proofs are verified locally with the SP1 SDK before any
 comparison is asserted.
 

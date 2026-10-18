@@ -29,10 +29,7 @@ const REALIZED_ELF: Elf = include_elf!("realized-statement-sp1-program");
 #[command(author, version, about)]
 struct Args {
     /// Path to the canonical realized-statement input JSON document.
-    #[arg(
-        long,
-        default_value = "../../scenarios/allocation/a-vs-b-plus-c/realized-statement-input.json"
-    )]
+    #[arg(long)]
     input: String,
     /// Execute the program without generating a proof.
     #[arg(long)]

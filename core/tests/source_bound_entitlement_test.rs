@@ -6,7 +6,7 @@ mod source_bound_entitlement_vectors;
 
 fn fixture() -> Value {
     serde_json::from_str(include_str!(
-        "../../../etc/conformance/vectors/source-bound-entitlement-v1.json"
+        "../../vectors/source-bound-entitlement-v1.json"
     ))
     .expect("valid conformance fixture")
 }
