@@ -22,6 +22,13 @@ workspace.
 These are source pins. This repository has not received SP1 or Solidity proof
 qualification, and its crates are not released through a package registry.
 
+> **Experimental, unaudited software:** Native kernel tests do not qualify SP1
+> guest execution, generated proofs, verifier contracts, or production use. This
+> repository does not claim an independent security audit or production
+> qualification. Treat proof-generation and verification paths as experimental
+> until their exact versions, settings, and deployed verifier have been separately
+> qualified.
+
 ## Workspace
 
 Run native kernel checks from the repository root:
