@@ -55,7 +55,7 @@ pub fn solidity_snapshot_hash(input: &Value) -> String {
 }
 
 pub fn validate_raw_reserve(input: &Value) -> Result<(), &'static str> {
-    let chain = input["chain-id"]
+    let _chain = input["chain-id"]
         .as_str()
         .ok_or("chain-id")?
         .parse::<u64>()
