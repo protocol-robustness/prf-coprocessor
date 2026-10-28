@@ -60,9 +60,6 @@ pub fn validate_raw_reserve(input: &Value) -> Result<(), &'static str> {
         .ok_or("chain-id")?
         .parse::<u64>()
         .map_err(|_| "chain-id")?;
-    if chain > u64::MAX {
-        return Err("chain-id");
-    }
     for key in ["reserve", "token-address", "allocator"] {
         let address = input[key].as_str().ok_or("address")?;
         if address.len() != 42
