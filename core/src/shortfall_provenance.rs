@@ -55,14 +55,11 @@ pub fn solidity_snapshot_hash(input: &Value) -> String {
 }
 
 pub fn validate_raw_reserve(input: &Value) -> Result<(), &'static str> {
-    let chain = input["chain-id"]
+    let _chain = input["chain-id"]
         .as_str()
         .ok_or("chain-id")?
         .parse::<u64>()
         .map_err(|_| "chain-id")?;
-    if chain > u64::MAX {
-        return Err("chain-id");
-    }
     for key in ["reserve", "token-address", "allocator"] {
         let address = input[key].as_str().ok_or("address")?;
         if address.len() != 42

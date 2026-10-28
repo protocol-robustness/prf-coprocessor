@@ -136,7 +136,10 @@ fn check_binding(
         mismatches.push("public-values schema");
     }
     if !mismatches.is_empty() {
-        return Err(format!("accounting proof metadata mismatch: {}", mismatches.join(", ")));
+        return Err(format!(
+            "accounting proof metadata mismatch: {}",
+            mismatches.join(", ")
+        ));
     }
     if metadata.proof_sha256 != sha256_ref(proof_bytes)
         || metadata.public_values_sha256 != sha256_ref(proof.public_values.as_slice())

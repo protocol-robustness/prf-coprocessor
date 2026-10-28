@@ -9,7 +9,7 @@ sp1-build = "=6.3.1"
 
 [dependencies]
 sp1-sdk = { version = "=6.3.1", features = ["blocking"] }
-prf-pro-rata-allocation = { version = "0.1.0-rc.1", git = "https://github.com/protocol-robustness/prf-pro-rata-allocation.git", rev = "48e0b362748cd39d09994a8aa1496c668199aa74" }
+prf-pro-rata-allocation = { version = "0.1.0-rc.1", git = "https://github.com/protocol-robustness/prf-pro-rata-allocation.git", rev = "0b7b2a8badbaa2c345e8b9626aa68907510fc52f" }
 clap = { version = "4.0", features = ["derive"] }
 hex = "0.4"
 
