@@ -123,7 +123,7 @@ fn check_binding(
     if metadata.proof_program_elf_sha256 != sha256_ref(&ELF) {
         mismatches.push("ELF root");
     }
-    if metadata.proof_program_vkey != pk.verifying_key().bytes32().to_string() {
+    if metadata.proof_program_vkey != pk.verifying_key().bytes32() {
         mismatches.push("VKey");
     }
     if metadata.proof_system != "sp1-v6.3.1-core" {
@@ -136,7 +136,10 @@ fn check_binding(
         mismatches.push("public-values schema");
     }
     if !mismatches.is_empty() {
-        return Err(format!("accounting proof metadata mismatch: {}", mismatches.join(", ")));
+        return Err(format!(
+            "accounting proof metadata mismatch: {}",
+            mismatches.join(", ")
+        ));
     }
     if metadata.proof_sha256 != sha256_ref(proof_bytes)
         || metadata.public_values_sha256 != sha256_ref(proof.public_values.as_slice())

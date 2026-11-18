@@ -16,7 +16,8 @@ workspace.
   `5e2b520feca812b049ba397b7b3681963c66a48c`.
 - `prf-pro-rata-allocation` is pinned to
   `prf-pro-rata-allocation` revision
-  `48e0b362748cd39d09994a8aa1496c668199aa74`.
+  `0b7b2a8badbaa2c345e8b9626aa68907510fc52f`, which depends on the canonical
+  package revision above.
 - SP1 crates are pinned to version `6.3.1` in the Cargo manifests.
 
 These are source pins. This repository has not received SP1 or Solidity proof

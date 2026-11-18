@@ -287,7 +287,7 @@ fn parse_mappings(value: Option<&Value>) -> Result<HashMap<String, [u8; 20]>, (S
                     "claim/id must be a non-empty string",
                 )
             })?;
-        if previous.map_or(false, |prior| prior.as_bytes() >= claim_id.as_bytes()) {
+        if previous.is_some_and(|prior| prior.as_bytes() >= claim_id.as_bytes()) {
             return Err(reject(
                 "noncanonical-claim-recipient-mapping",
                 "mappings must be strictly ordered by UTF-8 claim/id bytes",
@@ -468,7 +468,9 @@ fn claim_root(leaves: &[[u8; 32]]) -> [u8; 32] {
             level.push(*level.last().expect("non-empty level"));
         }
         level = level
-            .chunks_exact(2)
+            .as_chunks::<2>()
+            .0
+            .iter()
             .map(|pair| keccak(&[&domain_word(CLAIM_NODE_DOMAIN), &pair[0], &pair[1]]))
             .collect();
     }

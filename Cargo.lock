@@ -2801,7 +2801,7 @@ dependencies = [
 [[package]]
 name = "prf-pro-rata-allocation"
 version = "0.1.0-rc.1"
-source = "git+https://github.com/protocol-robustness/prf-pro-rata-allocation.git?rev=48e0b362748cd39d09994a8aa1496c668199aa74#48e0b362748cd39d09994a8aa1496c668199aa74"
+source = "git+https://github.com/protocol-robustness/prf-pro-rata-allocation.git?rev=0b7b2a8badbaa2c345e8b9626aa68907510fc52f#0b7b2a8badbaa2c345e8b9626aa68907510fc52f"
 dependencies = [
  "hex",
  "num-bigint 0.4.8",

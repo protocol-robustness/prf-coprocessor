@@ -19,15 +19,11 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use sp1_sdk::{
     blocking::{ProveRequest, Prover, ProverClient},
-    include_elf, Elf, HashableKey, ProvingKey, SP1ProofWithPublicValues, SP1Stdin,
+    include_elf, Elf, HashableKey, ProvingKey, SP1Stdin,
 };
 use std::path::PathBuf;
 
 const REALIZED_ELF: Elf = include_elf!("realized-statement-sp1-program");
-
-fn sha256_ref(bytes: &[u8]) -> String {
-    format!("sha256:{:x}", Sha256::digest(bytes))
-}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about)]

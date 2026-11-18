@@ -193,7 +193,8 @@ pub fn run_realized_statement_with_details(input: &Value, detailed: bool) -> Val
     let unmet_request = fail_action_policy.as_deref().is_some_and(|pairs| {
         pairs.len() == 1 && pairs[0] == ("mode".to_owned(), CanonValue::keyword("unmet-request"))
     });
-    let mut realized: RealizedAllocation = match realized_fill::partial_fill(available, &requested) {
+    let mut realized: RealizedAllocation = match realized_fill::partial_fill(available, &requested)
+    {
         Ok(r) => r,
         Err(e) => return reject("realization-failed", e),
     };
@@ -303,10 +304,11 @@ fn validate_supported_profile(
     let supported_fail_action = match fail_action_policy {
         None => true,
         Some(pairs) => {
-            (pairs.len() == 1 && keyword_is(pairs, "mode", "unmet-request")) || (pairs.len() == 3
-                && keyword_is(pairs, "mode", "pro-rata-treatment")
-                && keyword_is(pairs, "deferred-policy", "same-ratio")
-                && keyword_is(pairs, "haircut-policy", "same-ratio"))
+            (pairs.len() == 1 && keyword_is(pairs, "mode", "unmet-request"))
+                || (pairs.len() == 3
+                    && keyword_is(pairs, "mode", "pro-rata-treatment")
+                    && keyword_is(pairs, "deferred-policy", "same-ratio")
+                    && keyword_is(pairs, "haircut-policy", "same-ratio"))
         }
     };
     if supported_policy && supported_fail_action {
