@@ -123,7 +123,7 @@ fn check_binding(
     if metadata.proof_program_elf_sha256 != sha256_ref(&ELF) {
         mismatches.push("ELF root");
     }
-    if metadata.proof_program_vkey != pk.verifying_key().bytes32().to_string() {
+    if metadata.proof_program_vkey != pk.verifying_key().bytes32() {
         mismatches.push("VKey");
     }
     if metadata.proof_system != "sp1-v6.3.1-core" {
