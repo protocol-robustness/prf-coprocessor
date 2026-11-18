@@ -61,13 +61,11 @@ mod tests {
         let accepted = derive(&input).unwrap();
         assert_eq!(
             accepted.realized_statement_root,
-            format!(
-                "{}",
-                input["prepared-operation"]["policy-root"]
-                    .as_str()
-                    .unwrap()
-                    .trim_start_matches("0x")
-            )
+            input["prepared-operation"]["policy-root"]
+                .as_str()
+                .unwrap()
+                .trim_start_matches("0x")
+                .to_string()
         );
     }
 
