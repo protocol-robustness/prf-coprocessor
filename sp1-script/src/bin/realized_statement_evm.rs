@@ -19,7 +19,7 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use sp1_sdk::{
     blocking::{ProveRequest, Prover, ProverClient},
-    include_elf, Elf, HashableKey, ProvingKey, SP1ProofWithPublicValues, SP1Stdin,
+    include_elf, Elf, HashableKey, ProvingKey, SP1Stdin,
 };
 use std::path::PathBuf;
 
