@@ -156,7 +156,6 @@ fn bytes32(value: &str) -> Result<[u8; 32], String> {
         .map_err(|_| format!("expected 32 bytes: {value}"))
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
