@@ -106,44 +106,6 @@ impl Witness {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn emits_exactly_five_words_from_raw_inputs() {
-        let input: Value = serde_json::from_str(include_str!(
-            "../tests/fixtures/onchain-shortfall-end-to-end-v1.json"
-        ))
-        .unwrap();
-        let witness = derive(&input).unwrap();
-        assert_eq!(
-            hex::encode(witness.realized_statement),
-            "1779ead0c2eff0239a3de700918fca7849e33cbca0a8ebdad363f3ec38f226e9"
-        );
-        assert_eq!(witness.public_values().len(), PUBLIC_VALUES_LEN);
-        assert_ne!(&witness.public_values()[32..64], &[0u8; 32]);
-    }
-
-    #[test]
-    fn source_mutations_change_bound_output() {
-        let input: Value = serde_json::from_str(include_str!(
-            "../tests/fixtures/onchain-shortfall-end-to-end-v1.json"
-        ))
-        .unwrap();
-        let first = derive(&input).unwrap().public_values();
-        let mut changed = input.clone();
-        changed["available-amount"] = Value::String("69".into());
-        assert!(derive(&changed).is_err());
-        let mut operation_changed = input.clone();
-        operation_changed["operation-id"] = Value::String(
-            "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb".into(),
-        );
-        assert!(derive(&operation_changed).is_err());
-        assert_eq!(first.len(), 160);
-    }
-}
-
 fn provenance_input(input: &Value) -> Result<Value, String> {
     let sf = input.get("shortfall").ok_or("shortfall required")?;
     let mut v = input.clone();
@@ -192,4 +154,43 @@ fn bytes32(value: &str) -> Result<[u8; 32], String> {
     bytes
         .try_into()
         .map_err(|_| format!("expected 32 bytes: {value}"))
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn emits_exactly_five_words_from_raw_inputs() {
+        let input: Value = serde_json::from_str(include_str!(
+            "../tests/fixtures/onchain-shortfall-end-to-end-v1.json"
+        ))
+        .unwrap();
+        let witness = derive(&input).unwrap();
+        assert_eq!(
+            hex::encode(witness.realized_statement),
+            "1779ead0c2eff0239a3de700918fca7849e33cbca0a8ebdad363f3ec38f226e9"
+        );
+        assert_eq!(witness.public_values().len(), PUBLIC_VALUES_LEN);
+        assert_ne!(&witness.public_values()[32..64], &[0u8; 32]);
+    }
+
+    #[test]
+    fn source_mutations_change_bound_output() {
+        let input: Value = serde_json::from_str(include_str!(
+            "../tests/fixtures/onchain-shortfall-end-to-end-v1.json"
+        ))
+        .unwrap();
+        let first = derive(&input).unwrap().public_values();
+        let mut changed = input.clone();
+        changed["available-amount"] = Value::String("69".into());
+        assert!(derive(&changed).is_err());
+        let mut operation_changed = input.clone();
+        operation_changed["operation-id"] = Value::String(
+            "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb".into(),
+        );
+        assert!(derive(&operation_changed).is_err());
+        assert_eq!(first.len(), 160);
+    }
 }
