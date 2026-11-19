@@ -239,28 +239,6 @@ fn fixture_proof_system(mode: SP1ProofMode) -> Result<&'static str, String> {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::fixture_proof_system;
-    use sp1_sdk::SP1ProofMode;
-
-    #[test]
-    fn evm_fixture_accepts_only_groth16_proofs() {
-        assert_eq!(fixture_proof_system(SP1ProofMode::Groth16), Ok("groth16"));
-    }
-
-    #[test]
-    fn evm_fixture_rejects_core_and_compressed_proofs() {
-        assert_eq!(
-            fixture_proof_system(SP1ProofMode::Core),
-            Err("expected Groth16 EVM proof, got Core".to_owned())
-        );
-        assert_eq!(
-            fixture_proof_system(SP1ProofMode::Compressed),
-            Err("expected Groth16 EVM proof, got Compressed".to_owned())
-        );
-    }
-}
 
 fn assert_matches_vector_golden(
     vector_case: &Option<source_bound_entitlement_vectors::MaterializedVector>,
@@ -289,4 +267,28 @@ fn print_source_identity(source: &serde_json::Value) {
         "source: {}",
         serde_json::to_string(source).expect("serialize source identity")
     );
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::fixture_proof_system;
+    use sp1_sdk::SP1ProofMode;
+
+    #[test]
+    fn evm_fixture_accepts_only_groth16_proofs() {
+        assert_eq!(fixture_proof_system(SP1ProofMode::Groth16), Ok("groth16"));
+    }
+
+    #[test]
+    fn evm_fixture_rejects_core_and_compressed_proofs() {
+        assert_eq!(
+            fixture_proof_system(SP1ProofMode::Core),
+            Err("expected Groth16 EVM proof, got Core".to_owned())
+        );
+        assert_eq!(
+            fixture_proof_system(SP1ProofMode::Compressed),
+            Err("expected Groth16 EVM proof, got Compressed".to_owned())
+        );
+    }
 }
